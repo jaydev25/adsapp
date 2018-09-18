@@ -1,14 +1,28 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
  */
 @Injectable()
 export class Api {
-  url: string = 'https://example.com/api/v1';
+  // url: string = 'https://adsserver.herokuapp.com';
+  url: string = 'http://localhost:5000';
+  token: string;
+  constructor(public http: HttpClient, public storage: Storage) {
+    this.setAPIHeaders();
+  }
 
-  constructor(public http: HttpClient) {
+  setAPIHeaders() {
+    this.storage.get('_token').then((value) => {
+      if (value) {
+        this.token = value;
+      } else {
+        this.token = '';
+      }
+      console.log(this.token);
+    });
   }
 
   get(endpoint: string, params?: any, reqOpts?: any) {
@@ -25,23 +39,53 @@ export class Api {
         reqOpts.params = reqOpts.params.set(k, params[k]);
       }
     }
-
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': this.token
+      })
+    };
+    reqOpts.headers = httpOptions.headers;
     return this.http.get(this.url + '/' + endpoint, reqOpts);
   }
 
-  post(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.post(this.url + '/' + endpoint, body, reqOpts);
+  post(endpoint: string, body: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': this.token
+      })
+    };
+    return this.http.post(this.url + '/' + endpoint, body, httpOptions);
   }
 
-  put(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.put(this.url + '/' + endpoint, body, reqOpts);
+  put(endpoint: string, body: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': this.token
+      })
+    };
+    return this.http.put(this.url + '/' + endpoint, body, httpOptions);
   }
 
-  delete(endpoint: string, reqOpts?: any) {
-    return this.http.delete(this.url + '/' + endpoint, reqOpts);
+  delete(endpoint: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': this.token
+      })
+    };
+    return this.http.delete(this.url + '/' + endpoint, httpOptions);
   }
 
-  patch(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.patch(this.url + '/' + endpoint, body, reqOpts);
+  patch(endpoint: string, body: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': this.token
+      })
+    };
+    return this.http.patch(this.url + '/' + endpoint, body, httpOptions);
   }
 }

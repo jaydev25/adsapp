@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, LoadingController } from 'ionic-angular';
 
 import { User } from '../../providers';
 import { MainPage } from '../';
@@ -15,8 +15,8 @@ export class LoginPage {
   // If you're using the username field with or without email, make
   // sure to add it to the type
   account: { email: string, password: string } = {
-    email: 'test@example.com',
-    password: 'test'
+    email: '',
+    password: ''
   };
 
   // Our translated text strings
@@ -25,8 +25,8 @@ export class LoginPage {
   constructor(public navCtrl: NavController,
     public user: User,
     public toastCtrl: ToastController,
-    public translateService: TranslateService) {
-
+    public translateService: TranslateService,
+    public loadingCtrl: LoadingController) {
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
       this.loginErrorString = value;
     })
@@ -34,17 +34,31 @@ export class LoginPage {
 
   // Attempt to login in through our User service
   doLogin() {
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Loading Please Wait...'
+    });
+    loading.present();
     this.user.login(this.account).subscribe((resp) => {
-      this.navCtrl.push(MainPage);
+      // this.navCtrl.push(MainPage);
+      setTimeout(() => {
+        loading.dismiss();
+        this.navCtrl.setRoot(MainPage);
+      }, 1000);
     }, (err) => {
-      this.navCtrl.push(MainPage);
+      loading.dismiss();
+      // this.navCtrl.push(MainPage);
       // Unable to log in
       let toast = this.toastCtrl.create({
-        message: this.loginErrorString,
+        message: err && err.error ? err.error.toUpperCase() : 'Somthing went wrong please try again',
         duration: 3000,
         position: 'top'
       });
       toast.present();
     });
+  }
+
+  forgotPassword() {
+    this.navCtrl.push('ForgotPasswordPage');
   }
 }

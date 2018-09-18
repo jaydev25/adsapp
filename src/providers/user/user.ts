@@ -1,8 +1,10 @@
 import 'rxjs/add/operator/toPromise';
 
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
 
 import { Api } from '../api/api';
+import { Menu } from '../menu/menu';
 
 /**
  * Most apps have the concept of a User. This is a simple provider
@@ -25,9 +27,9 @@ import { Api } from '../api/api';
  */
 @Injectable()
 export class User {
-  _user: any;
+  _token: any;
 
-  constructor(public api: Api) { }
+  constructor(public api: Api, public storage: Storage, public menu: Menu) { }
 
   /**
    * Send a POST request to our login endpoint with the data
@@ -38,7 +40,7 @@ export class User {
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
-      if (res.status == 'success') {
+      if (res.success) {
         this._loggedIn(res);
       } else {
       }
@@ -58,8 +60,24 @@ export class User {
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
-      if (res.status == 'success') {
-        this._loggedIn(res);
+      if (res.success) {
+        this.storage.set('_email', res.email);
+      }
+    }, err => {
+      console.error('ERROR', err);
+    });
+
+    return seq;
+  }
+
+  forgotPassword(data: any) {
+    let seq = this.api.post('changepasswordemail', data).share();
+
+    seq.subscribe((res: any) => {
+      // If the API returned a successful response, mark the user as logged in
+      if (res.success) {
+       
+      } else {
       }
     }, err => {
       console.error('ERROR', err);
@@ -72,13 +90,22 @@ export class User {
    * Log the user out, which forgets the session
    */
   logout() {
-    this._user = null;
+    this._token = null;
+    this.menu.logout();
+    this.storage.remove('_token').then(() => {
+      this.api.setAPIHeaders();
+    });
   }
 
   /**
    * Process a login/signup response to store user data
    */
   _loggedIn(resp) {
-    this._user = resp.user;
+    console.log(resp);
+    this.menu.login();
+    this._token = resp.token;
+    return this.storage.set('_token', resp.token).then(() => {
+      this.api.setAPIHeaders();
+    });  
   }
 }

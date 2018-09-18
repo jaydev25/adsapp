@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -9,7 +10,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 export class CardsPage {
   cardItems: any[];
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public storage: Storage) {
     this.cardItems = [
       {
         user: {
@@ -41,4 +42,18 @@ export class CardsPage {
     ];
 
   }
+
+  ionViewCanEnter(): any {
+    // here we can either return true or false
+    // depending on if we want to leave this view
+    return new Promise((resolve, reject) => {
+      return this.storage.get('_token').then((value) => {
+        if (value) {
+          return resolve();
+        } else {
+          return reject();
+        }
+      });
+    });
+   }
 }

@@ -32,12 +32,12 @@ export class TutorialPage {
         console.log('Loaded values', values);
         this.slides = [
           {
-            title: values.TUTORIAL_SLIDE1_TITLE,
+            title: 'Welcome to Ads App',
             description: values.TUTORIAL_SLIDE1_DESCRIPTION,
             image: 'assets/img/ica-slidebox-img-1.png',
           },
           {
-            title: values.TUTORIAL_SLIDE2_TITLE,
+            title: 'Find new businesses here',
             description: values.TUTORIAL_SLIDE2_DESCRIPTION,
             image: 'assets/img/ica-slidebox-img-2.png',
           },

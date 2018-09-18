@@ -14,3 +14,24 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+.split-pane-side {
+    border-right: 0px !important;
+ }
+ 
+ .transparent {
+    background: transparent;
+ }
+ 
+ .list-item {
+    margin-bottom: 10px;
+    font-size: 2rem;
+ }
+ 
+ :hover.list-item {
+    background: gray;
+ }
+ 
+ .scroll-content{
+    overflow: hidden;
+    overflow-y: scroll;
+ }

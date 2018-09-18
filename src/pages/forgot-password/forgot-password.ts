@@ -3,26 +3,25 @@ import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController, ToastController, LoadingController, AlertController } from 'ionic-angular';
 
 import { User } from '../../providers';
-import { MainPage } from '../';
+import { MainPage } from '..';
 
 @IonicPage()
 @Component({
-  selector: 'page-signup',
-  templateUrl: 'signup.html'
+  selector: 'page-forgot-password',
+  templateUrl: 'forgot-password.html'
 })
-export class SignupPage {
+export class ForgotPasswordPage {
   // The account fields for the login form.
   // If you're using the username field with or without email, make
   // sure to add it to the type
-  account: { firstName: string, lastName: string, email: string, password: string } = {
-    firstName: '',
-    lastName: '',
+  account: { email: string, password: string } = {
     email: '',
-    password: '',
+    password: ''
   };
+  confirmPassword: String; 
 
   // Our translated text strings
-  private signupErrorString: string;
+  private loginErrorString: string;
 
   constructor(public navCtrl: NavController,
     public user: User,
@@ -30,25 +29,24 @@ export class SignupPage {
     public translateService: TranslateService,
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController) {
-
-    this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
-      this.signupErrorString = value;
+    this.translateService.get('LOGIN_ERROR').subscribe((value) => {
+      this.loginErrorString = value;
     })
   }
 
-  doSignup() {
+  // Attempt to login in through our User service
+  forgotPassword() {
     let loading = this.loadingCtrl.create({
       spinner: 'bubbles',
-      content: 'Loading Please Wait...',
-      duration: 15000
+      content: 'Loading Please Wait...'
     });
     loading.present();
-    // Attempt to login in through our User service
-    this.user.signup(this.account).subscribe((resp) => {
+    this.user.forgotPassword(this.account).subscribe((resp) => {
       // this.navCtrl.push(MainPage);
+      this.navCtrl.pop();
       let alert = this.alertCtrl.create({
         title: 'Please verify your Email',
-        subTitle: 'Please click on the link that we have sent you in Email to complete the registration.',
+        subTitle: 'Please click on the link that we have sent you in Email to change your password.',
         buttons: [{
           text: 'OK',
           handler: () => {
@@ -57,12 +55,12 @@ export class SignupPage {
           }
         }]
       });
+      loading.dismiss();
       alert.present();
     }, (err) => {
-      // this.navCtrl.push(MainPage);
-      // this.navCtrl.setRoot(MainPage);
       loading.dismiss();
-      // Unable to sign up
+      // this.navCtrl.push(MainPage);
+      // Unable to log in
       let toast = this.toastCtrl.create({
         message: err && err.error ? err.error.toUpperCase() : 'Somthing went wrong please try again',
         duration: 3000,
@@ -70,24 +68,5 @@ export class SignupPage {
       });
       toast.present();
     });
-  }
-
-  presentAlert() {
-    let alert = this.alertCtrl.create({
-      title: 'Low battery',
-      subTitle: '10% of battery remaining',
-      buttons: ['Dismiss']
-    });
-    alert.present();
-  }
-
-  presentLoadingText() {
-    
-  
-    
-  
-    
-  
-    
   }
 }
