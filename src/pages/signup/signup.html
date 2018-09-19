@@ -43,6 +43,39 @@
         <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
       </ion-item>
 
+      <ion-item>
+        <ion-label>Account Type</ion-label>
+        <ion-select [(ngModel)]="accType" name="accType">
+          <ion-option value="Subscriber">Subscriber</ion-option>
+          <ion-option value="Publisher">Publisher</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- <ion-list no-lines>
+        <button menuClose ion-item *ngFor="let p of countries" class="transparent list-item">
+          {{p.name}}
+        </button>
+      </ion-list> -->
+
+      <ion-item>
+        <ion-label>Country</ion-label>
+        <ion-select [(ngModel)]="account.country" name="country" interface="action-sheet">
+          <ion-option *ngFor="let country of countries" [value] = "country.name">{{country.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>State</ion-label>
+        <ion-select [(ngModel)]="account.state" name="state" interface="action-sheet" (ionChange)="getStateById($event)">
+          <ion-option *ngFor="let state of filteredStates" [value] = "state.name">{{state.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Birth Date</ion-label>
+        <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="account.birthDate" name="birthDate"></ion-datetime>
+      </ion-item>
+
       <div padding>
         <button ion-button color="primary" block>{{ 'SIGNUP_BUTTON' | translate }}</button>
       </div>
