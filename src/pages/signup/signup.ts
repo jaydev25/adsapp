@@ -14,12 +14,13 @@ export class SignupPage {
   // The account fields for the login form.
   // If you're using the username field with or without email, make
   // sure to add it to the type
-  account: { firstName: string, lastName: string, email: string, password: string, contact: string, city: string, state: string, country: string, birthDate: Date, occupation: string } = {
+  account: { firstName: string, lastName: string, email: string, password: string, contact: string, accType: string, city: string, state: string, country: any, birthDate: Date, occupation: string } = {
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     contact: '',
+    accType: '',
     city: '',
     state: '',
     country: '',
@@ -28,10 +29,17 @@ export class SignupPage {
   };
 
   accType: string = 'Subscriber';
+  confirmPassword: String; 
 
   countries: any[];
   states: any[];
+  cities: any[];
   filteredStates: any[];
+  filteredCities: any[];
+
+  country: string;
+  state: string;
+  city: string;
 
   // Our translated text strings
   private signupErrorString: string;
@@ -43,20 +51,30 @@ export class SignupPage {
     public translateService: TranslateService,
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController) {
+
+    this.region.getRegionDate().subscribe((resp) => {
+      this.countries = resp['countries'];
+      this.states = resp['states'];
+      this.cities = resp['cities'];
+    }, (err) => {
+      console.log(err);
+    });
     
-    this.countries = region.countries;
-    this.states = region.states;
 
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
       this.signupErrorString = value;
     })
   }
 
-  getStateById(id) {
-    console.log(id);
-    
+  getStatesById(country) {
     this.filteredStates = this.states.filter((state) => {
-      return state.country_id === id; 
+      return state.country_id == country.id; 
+    });
+  }
+
+  getCitiesById(state) {
+    this.filteredCities = this.cities.filter((city) => {
+      return city.state_id == state.id; 
     });
   }
 
@@ -68,6 +86,10 @@ export class SignupPage {
     });
     loading.present();
     // Attempt to login in through our User service
+    this.account.country = this.country['name'];
+    this.account.state = this.state['name'];
+    this.account.city = this.city['name'];
+    this.account.accType = this.city['name'];
     this.user.signup(this.account).subscribe((resp) => {
       // this.navCtrl.push(MainPage);
       let alert = this.alertCtrl.create({
