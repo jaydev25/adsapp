@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, LoadingController, Platform } from 'ionic-angular';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 
 import { User } from '../../providers';
 import { MainPage } from '../';
@@ -19,6 +20,14 @@ export class LoginPage {
     password: ''
   };
 
+  options : InAppBrowserOptions = {
+    location: 'no',
+    clearcache: 'yes',
+    zoom : 'no',//Android only ,shows browser zoom controls 
+    hardwareback: 'no',
+    hideurlbar: 'yes'
+  };
+
   // Our translated text strings
   private loginErrorString: string;
 
@@ -26,7 +35,9 @@ export class LoginPage {
     public user: User,
     public toastCtrl: ToastController,
     public translateService: TranslateService,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    private theInAppBrowser: InAppBrowser,
+    private platform: Platform) {
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
       this.loginErrorString = value;
     })
@@ -41,16 +52,25 @@ export class LoginPage {
     loading.present();
     this.user.login(this.account).subscribe((resp) => {
       // this.navCtrl.push(MainPage);
-      setTimeout(() => {
+      if (resp['url']) {
         loading.dismiss();
-        this.navCtrl.setRoot(MainPage);
-      }, 1000);
+        if (this.platform.is('mobileweb')) {
+          this.openWithInAppBrowser(resp['url']);
+        } else {
+          this.openWithCordovaBrowser(resp['url']);
+        }
+      } else {
+        setTimeout(() => {
+          loading.dismiss();
+          this.navCtrl.setRoot(MainPage);
+        }, 1000);
+      }
     }, (err) => {
       loading.dismiss();
       // this.navCtrl.push(MainPage);
       // Unable to log in
       let toast = this.toastCtrl.create({
-        message: err && err.error ? err.error.toUpperCase() : 'Somthing went wrong please try again',
+        message: err && err.error ? err.error.toString().toUpperCase() : 'Somthing went wrong please try again',
         duration: 3000,
         position: 'top'
       });
@@ -61,4 +81,22 @@ export class LoginPage {
   forgotPassword() {
     this.navCtrl.push('ForgotPasswordPage');
   }
+
+  public openWithSystemBrowser(url : string){
+    let target = "_system";
+    const browser = this.theInAppBrowser.create(url,target,this.options);
+  }
+
+  public openWithInAppBrowser(url : string){
+    let target = "_blank";
+    const browser = this.theInAppBrowser.create(url,target,this.options);
+  }
+
+  public openWithCordovaBrowser(url : string){
+    let target = "_self";
+    const browser = this.theInAppBrowser.create(url,target,this.options);
+    browser.on('exit').subscribe(() => {
+      this.navCtrl.setRoot('LoginPage');
+    });
+  }  
 }
