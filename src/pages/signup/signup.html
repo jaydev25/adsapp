@@ -93,7 +93,7 @@
       <ion-item>
         <ion-label>City</ion-label>
         <ion-select [(ngModel)]="city" name="city" interface="action-sheet">
-          <ion-option *ngFor="let city of filteredCities" [value] = "state">{{city.name}}</ion-option>
+          <ion-option *ngFor="let city of filteredCities" [value] = "city">{{city.name}}</ion-option>
         </ion-select>
       </ion-item>
 
