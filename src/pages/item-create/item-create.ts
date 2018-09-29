@@ -19,9 +19,9 @@ export class ItemCreatePage {
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera) {
     this.form = formBuilder.group({
-      profilePic: [''],
-      name: ['', Validators.required],
-      about: ['']
+      image: [''],
+      title: ['', Validators.required],
+      description: ['']
     });
 
     // Watch the form for changes, and
@@ -34,6 +34,13 @@ export class ItemCreatePage {
 
   }
 
+  createItem() {
+    console.log('//////////////////////////');
+    
+    console.log(this.form);
+    
+  }
+
   getPicture() {
     if (Camera['installed']()) {
       this.camera.getPicture({
@@ -41,7 +48,7 @@ export class ItemCreatePage {
         targetWidth: 96,
         targetHeight: 96
       }).then((data) => {
-        this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
+        this.form.patchValue({ 'image': 'data:image/jpg;base64,' + data });
       }, (err) => {
         alert('Unable to take photo');
       })
@@ -77,6 +84,9 @@ export class ItemCreatePage {
    * back to the presenter.
    */
   done() {
+    console.log('//////////////////////////');
+    
+    console.log(this.form);
     if (!this.form.valid) { return; }
     this.viewCtrl.dismiss(this.form.value);
   }

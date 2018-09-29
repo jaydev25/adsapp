@@ -7,8 +7,8 @@ import { Storage } from '@ionic/storage';
  */
 @Injectable()
 export class Api {
-  url: string = 'https://adsserver.herokuapp.com';
-  // url: string = 'http://192.168.0.104:5000';
+  // url: string = 'https://adsserver.herokuapp.com';
+  url: string = 'http://192.168.0.104:5000';
   token: string;
   constructor(public http: HttpClient, public storage: Storage) {
     this.setAPIHeaders();
