@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, LoadingController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Items } from '../../providers';
@@ -11,9 +11,11 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'list-master.html'
 })
 export class ListMasterPage {
-  currentItems: any;
+  currentItems: any = [];
   isDataAvailable: boolean = false;
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController, public storage: Storage) {
+  constructor(public navCtrl: NavController,
+    public items: Items, public modalCtrl: ModalController,
+    public storage: Storage, public loadingCtrl: LoadingController) {
   }
 
   /**
@@ -23,12 +25,18 @@ export class ListMasterPage {
   }
 
   ngOnInit() {
-    console.log('////////////////////////////////////');
-    this.items.query().subscribe((resp) => {
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Loading Please Wait...'
+    });
+    loading.present();
+    this.items.query({offset: 0}).subscribe((resp) => {
+      loading.dismiss();
       this.isDataAvailable = true;
-      this.currentItems = resp;
+      this.currentItems = resp; 
     }, (err) => {
       console.log(err);
+      loading.dismiss();
     });
   }
   
@@ -54,7 +62,8 @@ export class ListMasterPage {
     let addModal = this.modalCtrl.create('ItemCreatePage');
     addModal.onDidDismiss(item => {
       if (item) {
-        this.items.add(item);
+        // this.items.add(item);
+        this.ngOnInit();
       }
     })
     addModal.present();
@@ -73,6 +82,17 @@ export class ListMasterPage {
   openItem(item: Item) {
     this.navCtrl.push('ItemDetailPage', {
       item: item
+    });
+  }
+
+  doInfinite(infiniteScroll) {
+    this.items.query({offset: this.currentItems.length}).subscribe((resp) => {
+      this.isDataAvailable = true;
+      this.currentItems = this.currentItems.concat(resp); 
+      infiniteScroll.complete();
+    }, (err) => {
+      console.log(err);
+      infiniteScroll.complete();
     });
   }
 }

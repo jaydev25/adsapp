@@ -11,7 +11,7 @@ import { Items } from '../../providers';
 export class ItemDetailPage {
   item: any;
 
-  constructor(public navCtrl: NavController, navParams: NavParams, items: Items) {
+  constructor(public navCtrl: NavController, navParams: NavParams, public items: Items) {
     this.item = navParams.get('item');
   }
 

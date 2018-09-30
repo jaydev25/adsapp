@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-import { IonicPage, NavController, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, ViewController, LoadingController, AlertController } from 'ionic-angular';
+import { Items } from '../../providers';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,8 @@ export class ItemCreatePage {
 
   form: FormGroup;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera,
+    public items: Items, public loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.form = formBuilder.group({
       image: [''],
       title: ['', Validators.required],
@@ -62,14 +64,14 @@ export class ItemCreatePage {
     reader.onload = (readerEvent) => {
 
       let imageData = (readerEvent.target as any).result;
-      this.form.patchValue({ 'profilePic': imageData });
+      this.form.patchValue({ 'image': imageData });
     };
 
     reader.readAsDataURL(event.target.files[0]);
   }
 
   getProfileImageStyle() {
-    return 'url(' + this.form.controls['profilePic'].value + ')'
+    return 'url(' + this.form.controls['image'].value + ')'
   }
 
   /**
@@ -84,10 +86,31 @@ export class ItemCreatePage {
    * back to the presenter.
    */
   done() {
-    console.log('//////////////////////////');
-    
-    console.log(this.form);
-    if (!this.form.valid) { return; }
-    this.viewCtrl.dismiss(this.form.value);
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Creating Ad Please Wait...'
+    });
+    loading.present();
+    this.items.createAd(this.form.value).subscribe((resp) => {
+      // this.navCtrl.push(MainPage);
+      console.log(resp);
+      if (!this.form.valid) { return; }
+      loading.dismiss();
+      this.viewCtrl.dismiss(this.form.value);
+    }, (err) => {
+      console.log(err);
+      let alert = this.alertCtrl.create({
+        title: 'Not Allowed',
+        subTitle: err.error,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            loading.dismiss();
+            this.viewCtrl.dismiss(this.form.value);
+          }
+        }]
+      });
+      alert.present();
+    });
   }
 }
