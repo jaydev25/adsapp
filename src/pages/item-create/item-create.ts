@@ -17,6 +17,8 @@ export class ItemCreatePage {
   item: any;
 
   form: FormGroup;
+  
+  public editorValue: string = '';
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera,
     public items: Items, public loadingCtrl: LoadingController, private alertCtrl: AlertController) {
@@ -34,13 +36,6 @@ export class ItemCreatePage {
 
   ionViewDidLoad() {
 
-  }
-
-  createItem() {
-    console.log('//////////////////////////');
-    
-    console.log(this.form);
-    
   }
 
   getPicture() {

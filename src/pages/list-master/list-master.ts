@@ -13,6 +13,7 @@ import { Storage } from '@ionic/storage';
 export class ListMasterPage {
   currentItems: any = [];
   isDataAvailable: boolean = false;
+  scrollLock: boolean = false;
   constructor(public navCtrl: NavController,
     public items: Items, public modalCtrl: ModalController,
     public storage: Storage, public loadingCtrl: LoadingController) {
@@ -86,13 +87,17 @@ export class ListMasterPage {
   }
 
   doInfinite(infiniteScroll) {
-    this.items.query({offset: this.currentItems.length}).subscribe((resp) => {
-      this.isDataAvailable = true;
-      this.currentItems = this.currentItems.concat(resp); 
-      infiniteScroll.complete();
-    }, (err) => {
-      console.log(err);
-      infiniteScroll.complete();
-    });
+    if (!this.scrollLock) {
+      this.scrollLock = true;
+      this.items.query({offset: this.currentItems.length}).subscribe((resp) => {
+        this.isDataAvailable = true;
+        this.currentItems = this.currentItems.concat(resp); 
+        infiniteScroll.complete();
+        this.scrollLock = false;
+      }, (err) => {
+        console.log(err);
+        infiniteScroll.complete();
+      });
+    }
   }
 }
