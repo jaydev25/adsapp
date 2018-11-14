@@ -42,6 +42,18 @@
       <ion-item>
         <ion-input type="text" placeholder="Description" formControlName="description"></ion-input>
       </ion-item>
+      <ion-item>
+        <ion-label>Category</ion-label>
+        <ion-select [(ngModel)]="category" name="category" interface="action-sheet" (ionChange)="getSubcatsById($event)">
+          <ion-option *ngFor="let category of categories" [value] = "category">{{category.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Subcategory</ion-label>
+        <ion-select [(ngModel)]="state" name="state" interface="action-sheet" (ionChange)="getCitiesById($event)">
+          <ion-option *ngFor="let state of filteredStates" [value] = "state">{{state.name}}</ion-option>
+        </ion-select>
+      </ion-item>
     </ion-list>
   </form>
 </ion-content>

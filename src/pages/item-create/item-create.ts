@@ -11,26 +11,50 @@ import { Items } from '../../providers';
 })
 export class ItemCreatePage {
   @ViewChild('fileInput') fileInput;
-
   isReadyToSave: boolean;
-
   item: any;
-
+  categories: any;
+  subcategories: any;
   form: FormGroup;
-  
   public editorValue: string = '';
-
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera,
     public items: Items, public loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.form = formBuilder.group({
       image: [''],
       title: ['', Validators.required],
-      description: ['']
+      description: [''],
+      category: [''],
+      subcategory: ['']
     });
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       this.isReadyToSave = this.form.valid;
+    });
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Loading Please Wait...'
+    });
+    loading.present();
+    this.items.getMetaData().subscribe((resp) => {
+      // this.navCtrl.push(MainPage);
+      console.log(resp);
+      this.categories = resp; 
+      loading.dismiss();
+    }, (err) => {
+      console.log(err);
+      let alert = this.alertCtrl.create({
+        title: 'Sonthing went wrong, Please try again.',
+        subTitle: err.error,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            loading.dismiss();
+            this.viewCtrl.dismiss(this.form.value);
+          }
+        }]
+      });
+      alert.present();
     });
   }
 

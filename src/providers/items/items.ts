@@ -36,6 +36,12 @@ export class Items {
     return seq;
   }
 
+  getMetaData(params?: any) {
+    let seq = this.api.get('api/ads/getmetadata');
+    console.log('api call');
+    return seq;
+  }
+
   add(item: Item) {
   }
 
