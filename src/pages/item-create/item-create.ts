@@ -20,11 +20,11 @@ export class ItemCreatePage {
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera,
     public items: Items, public loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.form = formBuilder.group({
-      image: [''],
+      image: ['', Validators.required],
       title: ['', Validators.required],
-      description: [''],
-      category: [''],
-      subcategory: ['']
+      description: ['', Validators.required],
+      category: ['', Validators.required],
+      subcategory: ['', Validators.required]
     });
 
     // Watch the form for changes, and
@@ -89,6 +89,10 @@ export class ItemCreatePage {
     reader.readAsDataURL(event.target.files[0]);
   }
 
+  getSubcatsById(event) {
+    this.subcategories = event.Subcategories;
+  }
+
   getProfileImageStyle() {
     return 'url(' + this.form.controls['image'].value + ')'
   }
@@ -110,6 +114,8 @@ export class ItemCreatePage {
       content: 'Creating Ad Please Wait...'
     });
     loading.present();
+    this.form.value.catId = this.form.value.category.id;
+    this.form.value.subcatId = this.form.value.subcategory.id;
     this.items.createAd(this.form.value).subscribe((resp) => {
       // this.navCtrl.push(MainPage);
       console.log(resp);
