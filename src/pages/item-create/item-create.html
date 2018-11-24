@@ -27,15 +27,19 @@
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="createItem()">
     <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
     <div class="profile-image-wrapper" (click)="getPicture()">
-      <div class="profile-image-placeholder" *ngIf="!this.form.controls.image.value">
+      <!-- <div class="profile-image-placeholder" *ngIf="!this.form.controls.image.value"> -->
+      <div class="profile-image-placeholder">
         <ion-icon name="add"></ion-icon>
         <div>
           {{ 'ITEM_CREATE_CHOOSE_IMAGE' | translate }}
         </div>
       </div>
-      <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.image.value"></div>
+      <!-- <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.image.value"></div> -->
     </div>
     <ion-list>
+        <ion-item *ngFor="let image of this.form.value.images">
+          <img [src]="getImgContent(image)" />
+        </ion-item>
       <ion-item>
         <ion-input type="text" placeholder="Title" formControlName="title"></ion-input>
       </ion-item>

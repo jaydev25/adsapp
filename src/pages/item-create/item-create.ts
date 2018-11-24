@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { IonicPage, NavController, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { Items } from '../../providers';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage()
 @Component({
@@ -18,9 +19,10 @@ export class ItemCreatePage {
   form: FormGroup;
   public editorValue: string = '';
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera,
-    public items: Items, public loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+    public items: Items, public loadingCtrl: LoadingController, private alertCtrl: AlertController,
+    private sanitizer: DomSanitizer) {
     this.form = formBuilder.group({
-      image: ['', Validators.required],
+      images: [[]],
       title: ['', Validators.required],
       description: ['', Validators.required],
       category: ['', Validators.required],
@@ -69,7 +71,8 @@ export class ItemCreatePage {
         targetWidth: 96,
         targetHeight: 96
       }).then((data) => {
-        this.form.patchValue({ 'image': 'data:image/jpg;base64,' + data });
+      this.form.value.images.push('data:image/jpg;base64,' + data);
+      // this.form.patchValue({ 'image': 'data:image/jpg;base64,' + data });
       }, (err) => {
         alert('Unable to take photo');
       })
@@ -83,7 +86,9 @@ export class ItemCreatePage {
     reader.onload = (readerEvent) => {
 
       let imageData = (readerEvent.target as any).result;
-      this.form.patchValue({ 'image': imageData });
+      
+      this.form.value.images.push(imageData);
+      // this.form.patchValue({ 'image': imageData });
     };
 
     reader.readAsDataURL(event.target.files[0]);
@@ -93,8 +98,12 @@ export class ItemCreatePage {
     this.subcategories = event.Subcategories;
   }
 
-  getProfileImageStyle() {
-    return 'url(' + this.form.controls['image'].value + ')'
+  getProfileImageStyle(image) {
+    return 'url(' + image + ')'
+  }
+
+  getImgContent(image) {
+    return this.sanitizer.bypassSecurityTrustUrl(image);
   }
 
   /**

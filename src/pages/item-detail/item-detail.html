@@ -8,8 +8,15 @@
 
 
 <ion-content *ngIf="item">
-  <div class="item-profile" text-center #profilePic [style.background-image]="'url(' + items.AWS_S3_BASE_URL + item.AdsMedia[0].mediaURL + ')'">
+  <!-- <div class="item-profile" text-center #profilePic [style.background-image]="'url(' + items.AWS_S3_BASE_URL + item.AdsMedia[0].mediaURL + ')'"> -->
+  <div class="item-profile" text-center #profilePic>
+      <ion-slides pager="true">
+          <ion-slide *ngFor="let image of item.AdsMedia">
+              <img [src]="items.AWS_S3_BASE_URL + image.mediaURL" />
+          </ion-slide>
+        </ion-slides>
   </div>
+  
 
   <div class="item-detail" padding>
     <h2>{{item.title}}</h2>
