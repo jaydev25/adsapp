@@ -26,6 +26,22 @@ export class ListMasterPage {
   }
 
   ngOnInit() {
+    // let loading = this.loadingCtrl.create({
+    //   spinner: 'bubbles',
+    //   content: 'Loading Please Wait...'
+    // });
+    // loading.present();
+    // this.items.query({offset: 0}).subscribe((resp) => {
+    //   loading.dismiss();
+    //   this.isDataAvailable = true;
+    //   this.currentItems = resp; 
+    // }, (err) => {
+    //   console.log(err);
+    //   loading.dismiss();
+    // });
+  }
+  
+  ionViewDidEnter() {
     let loading = this.loadingCtrl.create({
       spinner: 'bubbles',
       content: 'Loading Please Wait...'
@@ -40,7 +56,7 @@ export class ListMasterPage {
       loading.dismiss();
     });
   }
-  
+
   ionViewCanEnter(): any {
     // here we can either return true or false
     // depending on if we want to leave this view

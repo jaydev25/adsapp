@@ -118,6 +118,17 @@ export class ItemCreatePage {
    * back to the presenter.
    */
   done() {
+    if (this.form.value.images.length < 1) {
+      let alert = this.alertCtrl.create({
+        title: 'Form incomplete',
+        subTitle: 'Please select atleast one image.',
+        buttons: [{
+          text: 'OK'
+        }]
+      });
+      alert.present();
+      return false;
+    }
     let loading = this.loadingCtrl.create({
       spinner: 'bubbles',
       content: 'Creating Ad Please Wait...'
