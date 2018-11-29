@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams,  Slides} from 'ionic-angular';
 
 import { Items } from '../../providers';
 import { MainPage } from '../';
+import * as _ from 'lodash';
 
 @IonicPage()
 @Component({
@@ -12,8 +13,27 @@ import { MainPage } from '../';
 export class ItemDetailPage {
   item: any;
   viewId: any;
+  viewUsers: any = [];
   constructor(public navCtrl: NavController, navParams: NavParams, public items: Items) {
     this.item = navParams.get('item');
+    if (this.item) {
+      // this.viewUsers = _.groupBy(this.item.AdsStats, 'createdBy');
+      _.forEach(_.groupBy(this.item.AdsStats, 'createdBy'), (element, key) => {
+        element.duration = _.sumBy(element, function(o) {
+          const createdAt = new Date(o.createdAt);
+          const updatedAt = new Date(o.updatedAt);
+          var seconds = (updatedAt.getTime() - createdAt.getTime()) / 1000;
+          return seconds;
+        });
+        this.viewUsers.push({
+          user: key,
+          duration: element.duration
+        })
+      });
+      // this.viewUsers = _.map(_.uniqBy(this.item.AdsStats, 'createdBy'), 'createdBy');
+      console.log(this.viewUsers);
+    }
+    
   }
 
   ionViewDidEnter() {
