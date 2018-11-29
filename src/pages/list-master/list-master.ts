@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, LoadingController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
-import { Items } from '../../providers';
+import { Items, User } from '../../providers';
 import { Storage } from '@ionic/storage';
+import { MainPage } from '../';
 
 @IonicPage()
 @Component({
@@ -14,7 +15,7 @@ export class ListMasterPage {
   currentItems: any = [];
   isDataAvailable: boolean = false;
   scrollLock: boolean = false;
-  constructor(public navCtrl: NavController,
+  constructor(public navCtrl: NavController, public user: User,
     public items: Items, public modalCtrl: ModalController,
     public storage: Storage, public loadingCtrl: LoadingController) {
   }
@@ -52,6 +53,10 @@ export class ListMasterPage {
       this.isDataAvailable = true;
       this.currentItems = resp; 
     }, (err) => {
+      if (err.error === 'Unauthorized') {
+        this.user.logout();
+        this.navCtrl.setRoot('LoginPage');
+      }
       console.log(err);
       loading.dismiss();
     });
