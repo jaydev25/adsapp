@@ -22,6 +22,34 @@ export class Items {
     return seq;
   }
 
+  getMyAds(params?: any) {
+    let seq = this.api.get('api/ads/myads', params);
+    console.log('api call');
+    
+    // seq.subscribe((res: any) => {
+    //   // If the API returned a successful response, mark the user as logged in
+    //   console.log(res);
+    // }, err => {
+    //   console.error('ERROR', err);
+    // });
+
+    return seq;
+  }
+  
+  deleteAd(params?: any) {
+    let seq = this.api.delete('api/ads/delete/' + params);
+    console.log('api call');
+    
+    // seq.subscribe((res: any) => {
+    //   // If the API returned a successful response, mark the user as logged in
+    //   console.log(res);
+    // }, err => {
+    //   console.error('ERROR', err);
+    // });
+
+    return seq;
+  }
+
   createAd(params?: any) {
     let seq = this.api.post('api/ads/create', params);
     console.log('api call');

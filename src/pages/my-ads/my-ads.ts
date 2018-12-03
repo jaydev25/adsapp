@@ -1,17 +1,24 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, LoadingController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, LoadingController, NavParams } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Items, User } from '../../providers';
 import { Storage } from '@ionic/storage';
 import { MainPage } from '../';
 
+/**
+ * Generated class for the MyAdsPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
 @IonicPage()
 @Component({
-  selector: 'page-list-master',
-  templateUrl: 'list-master.html'
+  selector: 'page-my-ads',
+  templateUrl: 'my-ads.html',
 })
-export class ListMasterPage {
+export class MyAdsPage {
   currentItems: any = [];
   isDataAvailable: boolean = false;
   scrollLock: boolean = false;
@@ -20,35 +27,17 @@ export class ListMasterPage {
     public storage: Storage, public loadingCtrl: LoadingController) {
   }
 
-  /**
-   * The view loaded, let's query our items for the list
-   */
   ionViewDidLoad() {
+    console.log('ionViewDidLoad MyAdsPage');
   }
 
   ngOnInit() {
-    // let loading = this.loadingCtrl.create({
-    //   spinner: 'bubbles',
-    //   content: 'Loading Please Wait...'
-    // });
-    // loading.present();
-    // this.items.query({offset: 0}).subscribe((resp) => {
-    //   loading.dismiss();
-    //   this.isDataAvailable = true;
-    //   this.currentItems = resp; 
-    // }, (err) => {
-    //   console.log(err);
-    //   loading.dismiss();
-    // });
-  }
-  
-  ionViewDidEnter() {
     let loading = this.loadingCtrl.create({
       spinner: 'bubbles',
       content: 'Loading Please Wait...'
     });
     loading.present();
-    this.items.query({offset: 0}).subscribe((resp) => {
+    this.items.getMyAds({offset: 0}).subscribe((resp) => {
       loading.dismiss();
       this.isDataAvailable = true;
       this.currentItems = resp; 
@@ -60,6 +49,9 @@ export class ListMasterPage {
       console.log(err);
       loading.dismiss();
     });
+  }
+  
+  ionViewDidEnter() {
   }
 
   ionViewCanEnter(): any {
@@ -103,15 +95,14 @@ export class ListMasterPage {
    */
   openItem(item: Item) {
     this.navCtrl.push('ItemDetailPage', {
-      item: item,
-      isView: true
+      item: item
     });
   }
 
   doInfinite(infiniteScroll) {
     if (!this.scrollLock) {
       this.scrollLock = true;
-      this.items.query({offset: this.currentItems.length}).subscribe((resp) => {
+      this.items.getMyAds({offset: this.currentItems.length}).subscribe((resp) => {
         this.isDataAvailable = true;
         this.currentItems = this.currentItems.concat(resp); 
         infiniteScroll.complete();

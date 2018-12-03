@@ -2,6 +2,11 @@
 
   <ion-navbar>
     <ion-title *ngIf="item">{{ item.title }}</ion-title>
+    <ion-buttons end *ngIf="item && !item.isView">
+        <button ion-button color="danger" (click)="deleteAd(item.id)">
+          {{ 'DELETE_BUTTON' | translate }}
+        </button>
+      </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -20,11 +25,12 @@
   <div class="item-detail" padding>
     <h2>{{item.title}}</h2>
     <p>{{item.description}}</p>
-    <p>Views: {{item.AdsStats.length}}</p>
-    <p>Viewed By {{viewUsers.length}} Users</p>
+    <p>Views: {{item.views}}</p>
+    <p>Viewed By {{item.userViews}} Users</p>
+    <strong>You</strong> viewed for <strong>{{item.duration}}</strong> Seconds.
     <ul class="heroes">
-      <li *ngFor="let user of viewUsers">
-          <strong>{{user.user}}</strong> viewed for <strong>{{user.duration}}</strong> Seconds.
+      <li *ngFor="let user of viewers">
+          <strong>{{user}}</strong>
       </li>
     </ul>
   </div>
