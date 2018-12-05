@@ -25,13 +25,18 @@
   <div class="item-detail" padding>
     <h2>{{item.title}}</h2>
     <p>{{item.description}}</p>
-    <p>Views: {{item.views}}</p>
-    <p>Viewed By {{item.userViews}} Users</p>
+    <p>Total Views: {{item.views}}</p>
+    <p>Viewed By {{item.userViews}} Users,<span *ngIf="isView">Below is the list of thise users</span></p>
     <p *ngIf="isView"><strong>You</strong> viewed for <strong>{{item.duration}}</strong> Seconds.</p>
     <p *ngIf="!isView">Ad viewed for <strong>{{viewTime}}</strong> Seconds.</p>
-    <ul class="heroes">
+    <ul class="heroes" *ngIf="isView">
       <li *ngFor="let user of viewers">
           <strong>{{user}}</strong>
+      </li>
+    </ul>
+    <ul class="heroes" *ngIf="!isView">
+      <li *ngFor="let user of viewUsers">
+          <strong>{{user.user}}</strong> - <strong>{{user.duration}}</strong> seconds.
       </li>
     </ul>
   </div>

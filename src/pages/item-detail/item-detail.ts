@@ -15,6 +15,7 @@ export class ItemDetailPage {
   isView: any;
   viewId: any;
   viewers: any = [];
+  viewUsers: any = [];
   viewTime: any;
   constructor(public navCtrl: NavController, navParams: NavParams, public items: Items, private alertCtrl: AlertController,
     public loadingCtrl: LoadingController) {
@@ -37,6 +38,9 @@ export class ItemDetailPage {
       // this.viewers = _.map(_.uniqBy(this.item.AdsStats, 'createdBy'), 'createdBy');
       if (this.item.viewers) {
         this.viewers = this.item.viewers;
+      }
+      if (this.item.viewUsers) {
+        this.viewUsers = this.item.viewUsers;
       }
       if(this.item.viewUsers) {
         this.viewTime = _.sumBy(this.item.viewUsers, 'duration');
