@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,  Slides} from 'ionic-angular';
+import { IonicPage, NavController, NavParams,  Slides, AlertController, LoadingController} from 'ionic-angular';
 
 import { Items } from '../../providers';
 import { MainPage } from '../';
@@ -15,7 +15,8 @@ export class ItemDetailPage {
   isView: any;
   viewId: any;
   viewers: any = [];
-  constructor(public navCtrl: NavController, navParams: NavParams, public items: Items) {
+  constructor(public navCtrl: NavController, navParams: NavParams, public items: Items, private alertCtrl: AlertController,
+    public loadingCtrl: LoadingController) {
     this.item = navParams.get('item');
     this.isView = navParams.get('isView');
     if (this.item) {
@@ -61,11 +62,35 @@ export class ItemDetailPage {
   }
 
   deleteAd(item) {
-    this.items.deleteAd(item).subscribe((resp) => {
-      console.log(resp);
-    }, (err) => {
-      console.log(err);
-    });;
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Please Wait...'
+    });
+    let alert = this.alertCtrl.create({
+      title: 'Delete Ad',
+      subTitle: 'Are you sure you want to delete this ad?',
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          loading.present();
+          this.items.deleteAd(item).subscribe((resp) => {
+            console.log(resp);
+            this.navCtrl.setRoot('MyAdsPage');
+            loading.dismiss();
+          }, (err) => {
+            console.log(err);
+            loading.dismiss();
+          });
+        }
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          loading.dismiss();
+        }
+      },]
+    });
+    alert.present();
   }
 
   ionViewDidLeave() {
