@@ -78,6 +78,20 @@ export class Items {
     return seq;
   }
 
+  viewMyAd(params?: any) {
+    let seq = this.api.post('api/ads/viewmyad', params);
+    console.log('api call');
+    
+    // seq.subscribe((res: any) => {
+    //   // If the API returned a successful response, mark the user as logged in
+    //   console.log(res);
+    // }, err => {
+    //   console.error('ERROR', err);
+    // });
+
+    return seq;
+  }
+
   updateView(params?: any) {
     let seq = this.api.get('api/ads/updateview/' + params);
     console.log('api call');
