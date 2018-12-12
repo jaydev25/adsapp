@@ -15,7 +15,7 @@ export class SignupPage {
   // The account fields for the login form.
   // If you're using the username field with or without email, make
   // sure to add it to the type
-  account: { firstName: string, lastName: string, email: string, password: string, contact: string, accType: string, city: string, state: string, country: any, birthDate: Date, occupation: string } = {
+  account: { firstName: string, lastName: string, email: string, password: string, contact: string, accType: string, city: string, state: string, country: any, birthDate: Date, occupation: string, address: string, gender: string, pincode: number } = {
     firstName: '',
     lastName: '',
     email: '',
@@ -26,7 +26,10 @@ export class SignupPage {
     state: '',
     country: '',
     birthDate: null,
-    occupation: ''
+    occupation: '',
+    address: '',
+    gender: '',
+    pincode: null
   };
 
   accType: string = 'Subscriber';

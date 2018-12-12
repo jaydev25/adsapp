@@ -25,6 +25,14 @@
       </ion-item>
 
       <ion-item>
+        <ion-label floating>Gender</ion-label>
+        <ion-select [(ngModel)]="account.gender" name="gender" interface="action-sheet">
+          <ion-option [value] = "Male">Male</ion-option>
+          <ion-option [value] = "Female">Female</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
         <ion-label floating>Email</ion-label>
         <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
       </ion-item>
@@ -95,6 +103,16 @@
         <ion-select [(ngModel)]="city" name="city" interface="action-sheet">
           <ion-option *ngFor="let city of filteredCities" [value] = "city">{{city.name}}</ion-option>
         </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Pincode</ion-label>
+        <ion-input type="text" [(ngModel)]="account.pincode" name="pincode"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Address</ion-label>
+        <ion-input type="text" [(ngModel)]="account.address" name="address"></ion-input>
       </ion-item>
 
       <ion-item>
