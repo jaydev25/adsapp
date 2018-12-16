@@ -93,7 +93,7 @@ export class Items {
   }
 
   updateView(params?: any) {
-    let seq = this.api.get('api/ads/updateview/' + params);
+    let seq = this.api.get('api/ads/updateview/' + params.viewId + '/' + params.userId);
     console.log('api call');
     
     // seq.subscribe((res: any) => {

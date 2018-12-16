@@ -173,7 +173,10 @@ export class ItemDetailPage {
 
   ionViewDidLeave() {
     if (this.viewId && this.isView) {
-      this.items.updateView(this.viewId).subscribe((resp) => {
+      this.items.updateView({
+        viewId: this.viewId,
+        userId: this.item.userId
+      }).subscribe((resp) => {
         // this.navCtrl.push(MainPage);
         console.log(resp);
       }, (err) => {
