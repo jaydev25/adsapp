@@ -3,8 +3,8 @@
   <ion-navbar>
     <ion-title *ngIf="item">{{ item.title }}</ion-title>
     <ion-buttons end *ngIf="!isView">
-        <button ion-button color="danger" (click)="deleteAd(item.id)">
-          {{ 'DELETE_BUTTON' | translate }}
+        <button ion-button icon-only color="danger" (click)="deleteAd(item.id)">
+          <ion-icon name="trash"></ion-icon>
         </button>
       </ion-buttons>
   </ion-navbar>

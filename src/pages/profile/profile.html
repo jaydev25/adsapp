@@ -7,7 +7,15 @@
 <ion-header>
 
   <ion-navbar>
+    <button ion-button menuToggle left>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Profile</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="editUserInfo()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>

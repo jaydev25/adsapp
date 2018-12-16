@@ -97,6 +97,21 @@ export class User {
     });
   }
 
+  getUser() {
+    let seq = this.api.get('api/getuser').share();
+
+    // seq.subscribe((res: any) => {
+    //   // If the API returned a successful response, mark the user as logged in
+    //   if (res.success) {
+    //     this.storage.set('_email', res.email);
+    //   }
+    // }, err => {
+    //   console.error('ERROR', err);
+    // });
+
+    return seq;
+  }
+
   /**
    * Process a login/signup response to store user data
    */

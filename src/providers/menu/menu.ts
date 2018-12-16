@@ -49,6 +49,7 @@ export class Menu {
               this.pages[0] = { title: 'Ads', component: 'ListMasterPage' };
               this.pages[1] = { title: 'My Ads', component: 'MyAdsPage' };
               this.pages[2] = { title: 'Logout', component: 'WelcomePage' };
+              this.pages[3] = { title: 'User Profile', component: 'ProfilePage' };
               this.rootPage = 'ListMasterPage';
             } else {
               this.rootPage = FirstRunPage;
@@ -66,5 +67,6 @@ export class Menu {
         this.pages[0] = { title: 'Ads', component: 'ListMasterPage' };
         this.pages[1] = { title: 'My Ads', component: 'MyAdsPage' };
         this.pages[2] = { title: 'Logout', component: 'WelcomePage' };
+        this.pages[3] = { title: 'User Profile', component: 'ProfilePage' };
     }
 }

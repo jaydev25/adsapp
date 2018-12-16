@@ -12,11 +12,11 @@ export class Region {
   getRegionDate() {
     let seq = this.api.get('getregion').share();
 
-    seq.subscribe((res: any) => {
-      // If the API returned a successful response, mark the user as logged in
-    }, err => {
-      console.error('ERROR', err);
-    });
+    // seq.subscribe((res: any) => {
+    //   // If the API returned a successful response, mark the user as logged in
+    // }, err => {
+    //   console.error('ERROR', err);
+    // });
 
     return seq;
   }

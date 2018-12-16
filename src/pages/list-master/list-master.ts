@@ -85,7 +85,7 @@ export class ListMasterPage {
     addModal.onDidDismiss(item => {
       if (item) {
         // this.items.add(item);
-        this.ngOnInit();
+        this.ionViewDidEnter();
       }
     })
     addModal.present();
