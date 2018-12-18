@@ -112,6 +112,22 @@ export class User {
     return seq;
   }
 
+  updateUser(data: any) {
+    let seq = this.api.post('api/user/update', data).share();
+
+    // seq.subscribe((res: any) => {
+    //   // If the API returned a successful response, mark the user as logged in
+    //   if (res.success) {
+       
+    //   } else {
+    //   }
+    // }, err => {
+    //   console.error('ERROR', err);
+    // });
+
+    return seq;
+  }
+
   /**
    * Process a login/signup response to store user data
    */
