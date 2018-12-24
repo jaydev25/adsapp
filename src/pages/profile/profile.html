@@ -12,7 +12,7 @@
     </button>
     <ion-title>Profile</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="editUserInfo()">
+      <button *ngIf="userInfo" ion-button icon-only (click)="editUserInfo()">
         <ion-icon name="create"></ion-icon>
       </button>
     </ion-buttons>

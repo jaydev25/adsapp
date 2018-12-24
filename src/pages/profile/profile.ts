@@ -39,6 +39,7 @@ export class ProfilePage {
         // this.items.add(item);
         // this.ngOnInit();
       }
+      this.navCtrl.setRoot(this.navCtrl.getActive().component);
     })
     editModal.present();
   }
