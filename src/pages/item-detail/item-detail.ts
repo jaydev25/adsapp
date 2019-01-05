@@ -1,10 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Slides, AlertController, LoadingController} from 'ionic-angular';
+import { IonicPage, Platform, NavController, NavParams, ModalController, Slides, AlertController, LoadingController} from 'ionic-angular';
 
 import { Items } from '../../providers';
 import { MainPage } from '../';
 import * as _ from 'lodash';
 import { Chart } from 'chart.js';
+import * as papa from 'papaparse';
+import { File, FileEntry } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
 
 @IonicPage()
 @Component({
@@ -13,7 +16,8 @@ import { Chart } from 'chart.js';
 })
 export class ItemDetailPage {
   @ViewChild('chartCanvas') chartCanvas;
-
+  csvData: any[] = [];
+  headerRow: any[] = [];
   item: any;
   isView: any;
   viewId: any;
@@ -23,7 +27,8 @@ export class ItemDetailPage {
   views: any = [];
   chartVar: any;
   constructor(public navCtrl: NavController, navParams: NavParams, public items: Items, private alertCtrl: AlertController,
-    public loadingCtrl: LoadingController, public modalCtrl: ModalController) {
+    public loadingCtrl: LoadingController, public modalCtrl: ModalController, private file: File,
+    private fileOpener: FileOpener, public platform: Platform) {
     this.item = navParams.get('item');
     this.isView = navParams.get('isView');
     if (this.item) {
@@ -188,5 +193,65 @@ export class ItemDetailPage {
   openViewers() {
     let profileModal = this.modalCtrl.create('ViewersListPage', { viewers: this.viewUsers });
     profileModal.present();
+  }
+
+  downloadCSV() {
+    this.items.downloadStats({
+      adId: this.item.id,
+      statType: 'view'
+    }).subscribe(
+      (data: any) => {
+        this.headerRow = ['UserID', 'User Email', 'Ad ID', 'Duration', 'Created At'];
+        this.csvData = data.data;
+        let csv = papa.unparse(this.csvData);
+        var blob = new Blob([csv]);
+        //Determine a native file path to save to
+        let filePath = this.file.externalRootDirectory + 'Download/';
+        let fileName = 'Stats' + this.item.id + '.csv';         
+        if (this.platform.is('cordova')) {
+          this.file.writeFile(filePath, fileName, blob, { replace: true }).then((fileEntry: FileEntry) => {
+
+            console.log("File created!");
+  
+            //Open with File Opener plugin
+            this.fileOpener.open(fileEntry.toURL(), 'text/csv')
+              .then(() => console.log('File is opened'))
+              .catch(err => {
+                console.error('Error openening file: ' + err);
+                let alert = this.alertCtrl.create({
+                  title: 'Failed to open!',
+                  subTitle: 'Your file is downloaded in ' + filePath + fileName + ', but no app found to open the file.',
+                  buttons: [{
+                    text: 'Close',
+                    role: 'cancel'
+                  }]
+                });
+                alert.present();
+              });
+          }).catch((err) => {
+            console.error("Error creating file: " + err);
+            throw err;  //Rethrow - will be caught by caller
+          });
+        } else {
+          var a = window.document.createElement("a");
+          a.href = window.URL.createObjectURL(blob);
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+        //Write the file
+        
+      },
+      err => this.handleError(err)
+      );
+  }
+ 
+  private handleError(err) {
+    console.log('something went wrong: ', err);
+  }
+ 
+  trackByFn(index: any, item: any) {
+    return index;
   }
 }

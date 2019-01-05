@@ -21,6 +21,38 @@
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content padding *ngIf="userInfo">
+  <ion-list>
+    <ion-item>
+      <p></p>
+    </ion-item>
+  </ion-list>
+  <ion-card>
+    <ion-item text-center>
+      <h2>{{userInfo.firstName}} {{userInfo.lastName}}</h2>
+      <p>{{userDetails.birthDate | date: 'dd MMMM yyyy'}}</p>
+    </ion-item>
+  
+    <ion-card-content>
+      <p><strong>Country:</strong> {{userDetails.country}}</p>
+      <p><strong>State:</strong> {{userDetails.state}}</p>
+      <p><strong>City:</strong> {{userDetails.city}}</p>
+      <p><strong>Address:</strong> {{userDetails.address}}, {{userDetails.pincode}}</p>
+      <p><strong>Email:</strong> {{userInfo.email}}</p>
+      <p><strong>Contact:</strong> {{userInfo.contact}}</p>
+      <p><strong>Occupation:</strong> {{userDetails.occupation}}</p>
+    </ion-card-content>
+  
+    <ion-row>
+      <ion-col>
+          <div>Reward Points: {{userInfo.points}}</div>
+      </ion-col>
+      <!-- <ion-col center text-center>
+        <ion-note>
+          11h ago
+        </ion-note>
+      </ion-col> -->
+    </ion-row>
+  
+  </ion-card>
 </ion-content>

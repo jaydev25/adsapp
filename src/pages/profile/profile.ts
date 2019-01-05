@@ -17,12 +17,18 @@ import { User } from '../../providers';
 })
 export class ProfilePage {
   userInfo: any;
+  userDetails: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public user: User,
     public modalCtrl: ModalController) {
-    this.user.getUser().subscribe((resp) => {
+    this.user.getUser().subscribe((resp: any) => {
       console.log(resp);
-      this.userInfo = resp;
+      this.userInfo = resp.user;
+      if (resp.user.Publisher) {
+        this.userDetails = resp.user.Publisher;
+      } else {
+        this.userDetails = resp.user.Subscriber;
+      }
     }, (err) => {
       console.log(err);
     });
@@ -33,7 +39,7 @@ export class ProfilePage {
   }
 
   editUserInfo() {
-    let editModal = this.modalCtrl.create('UserInfoPage', {userInfo: this.userInfo.user});
+    let editModal = this.modalCtrl.create('UserInfoPage', {userInfo: this.userInfo});
     editModal.onDidDismiss(userInfo => {
       if (userInfo) {
         // this.items.add(item);

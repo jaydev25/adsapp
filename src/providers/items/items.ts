@@ -92,6 +92,20 @@ export class Items {
     return seq;
   }
 
+  downloadStats(params?: any) {
+    let seq = this.api.post('api/ads/downloadstats', params);
+    console.log('api call');
+    
+    // seq.subscribe((res: any) => {
+    //   // If the API returned a successful response, mark the user as logged in
+    //   console.log(res);
+    // }, err => {
+    //   console.error('ERROR', err);
+    // });
+
+    return seq;
+  }
+
   updateView(params?: any) {
     let seq = this.api.get('api/ads/updateview/' + params.viewId + '/' + params.userId);
     console.log('api call');

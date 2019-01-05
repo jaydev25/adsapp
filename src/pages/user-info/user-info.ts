@@ -115,7 +115,8 @@ export class UserInfoPage {
         }
       }
     }, (err) => {
-      console.log(err);
+          loading.dismiss();
+          console.log(err);
     });
   }
 

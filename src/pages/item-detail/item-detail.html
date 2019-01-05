@@ -15,18 +15,52 @@
 <ion-content *ngIf="item">
   <!-- <div class="item-profile" text-center #profilePic [style.background-image]="'url(' + items.AWS_S3_BASE_URL + item.AdsMedia[0].mediaURL + ')'"> -->
   <div class="item-profile" text-center #profilePic>
-    <ion-slides pager="true">
-      <ion-slide *ngFor="let image of item.AdsMedia">
-          <img [src]="items.AWS_S3_BASE_URL + image.mediaURL" />
-      </ion-slide>
-    </ion-slides>
+    
   </div>
   
-  <div class="item-detail" padding>
-    <h2>{{item.title}}</h2>
-    <p>{{item.description}}</p>
-    <p>Total Views: {{item.views}}</p>
+  <!-- <div class="item-detail" padding>
+    
     <p *ngIf="viewUsers.length > 0">Viewed By {{viewUsers.length}} Users,<a (tap)="openViewers()"> Show Viewers</a></p>
-    <canvas #chartCanvas></canvas>
-  </div>
+  </div> -->
+  <ion-card>
+
+      <ion-item>
+        <h2>{{item.title}}</h2>
+        <p>{{item.createdBy}}</p>
+      </ion-item>
+    
+      <ion-slides pager="true">
+          <ion-slide *ngFor="let image of item.AdsMedia">
+              <img [src]="items.AWS_S3_BASE_URL + image.mediaURL" />
+          </ion-slide>
+        </ion-slides>
+    
+      <ion-card-content>
+        <p>{{item.description}}</p>
+      </ion-card-content>
+    
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-start clear small>
+            <ion-icon name="eye"></ion-icon>
+            <div>{{item.views}}</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-end clear small float-right (tap)="openViewers()">
+            <ion-icon name="user"></ion-icon>
+            <div>Viewers: {{viewUsers.length}}</div>
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col center text-center *ngIf="!isView">
+          <button ion-button icon-start clear small (tap)="downloadCSV()">
+            <ion-icon name="download"></ion-icon>
+            <div>Download Stats</div>
+          </button>
+        </ion-col>
+      </ion-row>
+      <canvas #chartCanvas *ngIf="!isView"></canvas>
+    </ion-card>
 </ion-content>
