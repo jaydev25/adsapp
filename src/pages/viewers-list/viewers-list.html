@@ -21,7 +21,7 @@
 <ion-content padding>
   <ul class="heroes" *ngIf="!isView">
     <li *ngFor="let user of list">
-        <strong>{{user.user}}</strong> - <strong>{{user.duration}}</strong> seconds.
+        <strong>{{user.user}}</strong> - <strong>{{user.duration | minuteSecondsPipe}}</strong>.
     </li>
   </ul>
 </ion-content>
