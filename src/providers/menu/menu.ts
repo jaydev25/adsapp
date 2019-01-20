@@ -43,13 +43,13 @@ export class Menu {
         // { title: 'Search', component: 'SearchPage' }
       ];
     rootPage;
-    constructor(public storage: Storage) { 
+    constructor(public storage: Storage) {
         this.storage.get('_token').then((value) => {
             if (value) {
               this.pages[0] = { title: 'Ads', component: 'ListMasterPage' };
               this.pages[1] = { title: 'My Ads', component: 'MyAdsPage' };
-              this.pages[2] = { title: 'Logout', component: 'WelcomePage' };
-              this.pages[3] = { title: 'User Profile', component: 'ProfilePage' };
+              this.pages[2] = { title: 'User Profile', component: 'ProfilePage' };
+              this.pages[3] = { title: 'Logout', component: 'WelcomePage' };
               this.rootPage = 'ListMasterPage';
             } else {
               this.rootPage = FirstRunPage;
@@ -66,7 +66,7 @@ export class Menu {
     login() {
         this.pages[0] = { title: 'Ads', component: 'ListMasterPage' };
         this.pages[1] = { title: 'My Ads', component: 'MyAdsPage' };
-        this.pages[2] = { title: 'Logout', component: 'WelcomePage' };
-        this.pages[3] = { title: 'User Profile', component: 'ProfilePage' };
+        this.pages[2] = { title: 'User Profile', component: 'ProfilePage' };
+        this.pages[3] = { title: 'Logout', component: 'WelcomePage' };
     }
 }
