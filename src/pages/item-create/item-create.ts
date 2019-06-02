@@ -24,6 +24,8 @@ export class ItemCreatePage {
     this.form = formBuilder.group({
       images: [[]],
       title: ['', Validators.required],
+      pickup: ['', Validators.required],
+      drop: ['', Validators.required],
       description: ['', Validators.required],
       category: ['', Validators.required],
       subcategory: ['', Validators.required]
@@ -41,7 +43,7 @@ export class ItemCreatePage {
     this.items.getMetaData().subscribe((resp) => {
       // this.navCtrl.push(MainPage);
       console.log(resp);
-      this.categories = resp; 
+      this.categories = resp;
       loading.dismiss();
     }, (err) => {
       console.log(err);
@@ -86,7 +88,7 @@ export class ItemCreatePage {
     reader.onload = (readerEvent) => {
 
       let imageData = (readerEvent.target as any).result;
-      
+
       this.form.value.images.push(imageData);
       // this.form.patchValue({ 'image': imageData });
     };

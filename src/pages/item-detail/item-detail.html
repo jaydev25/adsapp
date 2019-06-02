@@ -15,11 +15,11 @@
 <ion-content *ngIf="item">
   <!-- <div class="item-profile" text-center #profilePic [style.background-image]="'url(' + items.AWS_S3_BASE_URL + item.AdsMedia[0].mediaURL + ')'"> -->
   <div class="item-profile" text-center #profilePic>
-    
+
   </div>
-  
+
   <!-- <div class="item-detail" padding>
-    
+
     <p *ngIf="viewUsers.length > 0">Viewed By {{viewUsers.length}} Users,<a (tap)="openViewers()"> Show Viewers</a></p>
   </div> -->
   <ion-card>
@@ -28,17 +28,21 @@
         <h2>{{item.title}}</h2>
         <p>{{item.createdBy}}</p>
       </ion-item>
-    
+
       <ion-slides pager="true">
-          <ion-slide *ngFor="let image of item.AdsMedia">
-              <img [src]="items.AWS_S3_BASE_URL + image.mediaURL" />
-          </ion-slide>
-        </ion-slides>
-    
+        <ion-slide *ngFor="let image of item.AdsMedia">
+            <img [src]="items.AWS_S3_BASE_URL + image.mediaURL" />
+        </ion-slide>
+      </ion-slides>
+
       <ion-card-content>
+        <button ion-button clear small (tap)="openViewers()">
+          <ion-icon name="user"></ion-icon>
+          <div>{{publisherEmail}}</div>
+        </button>
         <p>{{item.description}}</p>
       </ion-card-content>
-    
+
       <ion-row>
         <ion-col>
           <button ion-button icon-start clear small>

@@ -37,11 +37,17 @@
       <!-- <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.image.value"></div> -->
     </div>
     <ion-list>
-        <ion-item *ngFor="let image of this.form.value.images">
-          <img [src]="getImgContent(image)" />
-        </ion-item>
+      <ion-item *ngFor="let image of this.form.value.images">
+        <img [src]="getImgContent(image)" />
+      </ion-item>
       <ion-item>
         <ion-input type="text" placeholder="Title" formControlName="title"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Pickup" formControlName="pickup"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Drop" formControlName="drop"></ion-input>
       </ion-item>
       <ion-item>
         <ion-input type="text" placeholder="Description" formControlName="description"></ion-input>

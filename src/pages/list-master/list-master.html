@@ -23,7 +23,7 @@
           <img [src]="items.AWS_S3_BASE_URL + item.AdsMedia[0].mediaURL" />
         </ion-avatar>
         <h2>{{item.title}}</h2>
-        <p>{{item.description}}</p>
+        <p>{{item.pickup}} - {{item.drop}}</p>
         <ion-note item-end *ngIf="item.views">{{item.views}}</ion-note>
       </button>
 

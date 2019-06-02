@@ -47,7 +47,7 @@ export class ItemDetailPage {
       // });
       // this.viewers = _.map(_.uniqBy(this.item.AdsStats, 'createdBy'), 'createdBy');
     }
-    
+
   }
 
   ionViewDidEnter() {
@@ -64,6 +64,7 @@ export class ItemDetailPage {
         this.viewUsers = resp.ad.viewUsers;
         // this.navCtrl.push(MainPage);
         this.viewId = resp.data.id;
+        this.publisherEmail = resp.data.createdBy;
         console.log(this.viewId);
       }, (err) => {
         console.log(err);
@@ -116,7 +117,7 @@ export class ItemDetailPage {
               '> 30',
             ]
           },
-    
+
           options: {
             legend: {
               display: true
@@ -135,7 +136,7 @@ export class ItemDetailPage {
           //       }]
           //   }
           // }
-    
+
         })
         // this.navCtrl.push(MainPage);
       }, (err) => {
@@ -207,12 +208,12 @@ export class ItemDetailPage {
         var blob = new Blob([csv]);
         //Determine a native file path to save to
         let filePath = this.file.externalRootDirectory + 'Download/';
-        let fileName = 'Stats' + this.item.id + '.csv';         
+        let fileName = 'Stats' + this.item.id + '.csv';
         if (this.platform.is('cordova')) {
           this.file.writeFile(filePath, fileName, blob, { replace: true }).then((fileEntry: FileEntry) => {
 
             console.log("File created!");
-  
+
             //Open with File Opener plugin
             this.fileOpener.open(fileEntry.toURL(), 'text/csv')
               .then(() => console.log('File is opened'))
@@ -241,16 +242,16 @@ export class ItemDetailPage {
           document.body.removeChild(a);
         }
         //Write the file
-        
+
       },
       err => this.handleError(err)
       );
   }
- 
+
   private handleError(err) {
     console.log('something went wrong: ', err);
   }
- 
+
   trackByFn(index: any, item: any) {
     return index;
   }
