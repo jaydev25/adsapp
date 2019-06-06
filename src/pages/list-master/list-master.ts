@@ -15,6 +15,7 @@ export class ListMasterPage {
   currentItems: any = [];
   isDataAvailable: boolean = false;
   scrollLock: boolean = false;
+  searchText: any;
   constructor(public navCtrl: NavController, public user: User,
     public items: Items, public modalCtrl: ModalController,
     public storage: Storage, public loadingCtrl: LoadingController) {
@@ -35,13 +36,13 @@ export class ListMasterPage {
     // this.items.query({offset: 0}).subscribe((resp) => {
     //   loading.dismiss();
     //   this.isDataAvailable = true;
-    //   this.currentItems = resp; 
+    //   this.currentItems = resp;
     // }, (err) => {
     //   console.log(err);
     //   loading.dismiss();
     // });
   }
-  
+
   ionViewDidEnter() {
     let loading = this.loadingCtrl.create({
       spinner: 'bubbles',
@@ -51,7 +52,7 @@ export class ListMasterPage {
     this.items.query({offset: 0}).subscribe((resp) => {
       loading.dismiss();
       this.isDataAvailable = true;
-      this.currentItems = resp; 
+      this.currentItems = resp;
     }, (err) => {
       if (err.error === 'Unauthorized') {
         this.user.logout();
@@ -111,14 +112,27 @@ export class ListMasterPage {
   doInfinite(infiniteScroll) {
     if (!this.scrollLock) {
       this.scrollLock = true;
-      this.items.query({offset: this.currentItems.length}).subscribe((resp) => {
+      this.items.query({offset: this.currentItems.length, searchText: this.searchText}).subscribe((resp) => {
         this.isDataAvailable = true;
-        this.currentItems = this.currentItems.concat(resp); 
+        this.currentItems = this.currentItems.concat(resp);
         infiniteScroll.complete();
         this.scrollLock = false;
       }, (err) => {
         console.log(err);
         infiniteScroll.complete();
+      });
+    }
+  }
+
+  ionChange() {
+    if (!this.scrollLock) {
+      this.scrollLock = true;
+      this.items.query({offset: 0, searchText: this.searchText}).subscribe((resp) => {
+        this.isDataAvailable = true;
+        this.currentItems = resp;
+        this.scrollLock = false;
+      }, (err) => {
+        console.log(err);
       });
     }
   }

@@ -11,6 +11,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-searchbar placeholder="Search" debounce="0" [(ngModel)]="searchText" (ionChange)="ionChange()"></ion-searchbar>
 
 </ion-header>
 
@@ -24,7 +25,7 @@
         </ion-avatar>
         <h2>{{item.title}}</h2>
         <p>{{item.pickup}} - {{item.drop}}</p>
-        <ion-note item-end *ngIf="item.views">{{item.views}}</ion-note>
+        <ion-note color="primary" item-end *ngIf="item.views">{{item.views}}</ion-note>
       </button>
 
       <ion-item-options>

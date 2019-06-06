@@ -26,6 +26,7 @@ export class ItemDetailPage {
   viewTime: any;
   views: any = [];
   chartVar: any;
+  publisherEmail: any;
   constructor(public navCtrl: NavController, navParams: NavParams, public items: Items, private alertCtrl: AlertController,
     public loadingCtrl: LoadingController, public modalCtrl: ModalController, private file: File,
     private fileOpener: FileOpener, public platform: Platform) {
@@ -194,6 +195,11 @@ export class ItemDetailPage {
   openViewers() {
     let profileModal = this.modalCtrl.create('ViewersListPage', { viewers: this.viewUsers });
     profileModal.present();
+  }
+
+  publisherInfo() {
+    let publisherInfoModal = this.modalCtrl.create('PublisherInfoPage', { email: this.publisherEmail });
+    publisherInfoModal.present();
   }
 
   downloadCSV() {

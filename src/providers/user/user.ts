@@ -76,7 +76,7 @@ export class User {
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
       if (res.success) {
-       
+
       } else {
       }
     }, err => {
@@ -112,13 +112,28 @@ export class User {
     return seq;
   }
 
+  getUserByEmail(email: any) {
+    let seq = this.api.post('api/getuser/byemail', {email}).share();
+
+    // seq.subscribe((res: any) => {
+    //   // If the API returned a successful response, mark the user as logged in
+    //   if (res.success) {
+    //     this.storage.set('_email', res.email);
+    //   }
+    // }, err => {
+    //   console.error('ERROR', err);
+    // });
+
+    return seq;
+  }
+
   updateUser(data: any) {
     let seq = this.api.post('api/user/update', data).share();
 
     // seq.subscribe((res: any) => {
     //   // If the API returned a successful response, mark the user as logged in
     //   if (res.success) {
-       
+
     //   } else {
     //   }
     // }, err => {
@@ -137,6 +152,6 @@ export class User {
     this._token = resp.token;
     return this.storage.set('_token', resp.token).then(() => {
       this.api.setAPIHeaders();
-    });  
+    });
   }
 }

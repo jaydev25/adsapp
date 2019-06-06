@@ -1,0 +1,51 @@
+<!--
+  Generated template for the PublisherInfoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>publisherInfo</ion-title>
+    <ion-buttons end>
+      <button ion-button navPop color="danger">
+          Close
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding *ngIf="userInfo">
+  <ion-list>
+    <ion-item>
+      <p></p>
+    </ion-item>
+  </ion-list>
+  <ion-card>
+    <ion-item text-center>
+      <h2>{{userInfo.firstName}} {{userInfo.lastName}}</h2>
+      <p>{{userDetails.birthDate | date: 'dd MMMM yyyy'}}</p>
+    </ion-item>
+
+    <ion-card-content>
+      <p><strong>Country:</strong> {{userDetails.country}}</p>
+      <p><strong>State:</strong> {{userDetails.state}}</p>
+      <p><strong>City:</strong> {{userDetails.city}}</p>
+      <p><strong>Address:</strong> {{userDetails.address}}, {{userDetails.pincode}}</p>
+      <p><strong>Email:</strong> {{userInfo.email}}</p>
+      <p><strong>Contact:</strong> {{userInfo.contact}}</p>
+      <p><strong>Occupation:</strong> {{userDetails.occupation}}</p>
+    </ion-card-content>
+
+    <ion-row>
+      <!-- <ion-col center text-center>
+        <ion-note>
+          11h ago
+        </ion-note>
+      </ion-col> -->
+    </ion-row>
+
+  </ion-card>
+</ion-content>

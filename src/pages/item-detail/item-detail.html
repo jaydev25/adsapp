@@ -36,12 +36,21 @@
       </ion-slides>
 
       <ion-card-content>
-        <button ion-button clear small (tap)="openViewers()">
+        <button ion-button clear small (tap)="publisherInfo()">
           <ion-icon name="user"></ion-icon>
           <div>{{publisherEmail}}</div>
         </button>
         <p>{{item.description}}</p>
+        <ionic3-star-rating
+        activeIcon = "ios-star"
+        defaultIcon = "ios-star-outline"
+        activeColor = "#488aff"
+        defaultColor = "#f4f4f4"
+        readonly="false"
+        [rating]="3">
+    </ionic3-star-rating>
       </ion-card-content>
+
 
       <ion-row>
         <ion-col>
