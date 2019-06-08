@@ -28,7 +28,8 @@ export class ItemCreatePage {
       drop: ['', Validators.required],
       description: ['', Validators.required],
       category: ['', Validators.required],
-      subcategory: ['', Validators.required]
+      subcategory: ['', Validators.required],
+      amount: ['', Validators.required]
     });
 
     // Watch the form for changes, and
